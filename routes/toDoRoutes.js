@@ -18,6 +18,11 @@ var bank = new ToDo("Go to the Bank", "Go to downtown to make a deosit");
 
 todos.push(hw,shop,bank);
 
+//one use of middleware
+router.use('/', function(req,res,next){
+  console.log('hit the todo router');
+  next();
+});
 router.param('id', function(req,res,next,id){
   for(var i =0; i <todos.length; i++){
     if(id === todos[i].id){

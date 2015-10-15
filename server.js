@@ -24,6 +24,19 @@ app.use(bodyParser.json());
 
 var toDoRoutes = require('./routes/toDoRoutes');
 
+//use on ALl any routes run this function
+app.use(function(req,res,next){
+	console.log(req.method + " : " + req.path);
+	next();
+});
+
+//use err express knows it's a error handling route
+app.use(function(err,req,res,next){
+	console.log(err.err);
+	res.status(400).send(err);
+});
+
+
 //on homepage load, render the index page
 app.get('/', function(req, res) {
 	res.render('index');
