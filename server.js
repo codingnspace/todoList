@@ -1,9 +1,14 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 var app = express();
 var port = process.env.PORT || 3000;
 
+//pulls model and puts in the database
+require('./models/todos');
+//creates database called todolist
+mongoose.connect('mongodb://localhost/todolist');
 
 app.set('views', path.join(__dirname, 'views'));
 //set the view engine that will render HTML from the server to the client

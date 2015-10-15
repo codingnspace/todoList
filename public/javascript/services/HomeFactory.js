@@ -29,7 +29,7 @@
 
 o.completeToDo = function(todo){
 	var q = $q.defer();
-	$http.put('/api/v1/todo/' + todo.id).then(function(){
+	$http.put('/api/v1/todo/' + todo._id).then(function(){
 		q.resolve();
 	});
 	return q.promise;
@@ -37,7 +37,7 @@ o.completeToDo = function(todo){
 
 o.unCompleteToDo = function(todo){
 	var q = $q.defer();
-	$http.patch('/api/v1/todo/' + todo.id).then(function(){
+	$http.patch('/api/v1/todo/' + todo._id).then(function(){
 			q.resolve();
 	});
 	return q.promise;
@@ -45,7 +45,7 @@ o.unCompleteToDo = function(todo){
  o.deleteToDo = function(todo){
 	 var q = $q.defer();
 
-	 $http.delete('/api/v1/todo/' + todo.id).then(function(){
+	 $http.delete('/api/v1/todo/' + todo._id).then(function(){
 		 q.resolve();
 	 });
 	 return q.promise;

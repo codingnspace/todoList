@@ -1,7 +1,7 @@
 var express = require('express');
-var uuid = require('uuid');
 //has own set of rules that each router gets
-var ToDo = require('../models/todos');
+var mongoose = require('mongoose');
+var ToDo = mongoose.model('ToDo');
 var router = express.Router();
 
 
@@ -14,40 +14,56 @@ router.use('/', function(req,res,next){
 });
 
 router.param('id', function(req,res,next,id){
-  ToDo.find(id, function(err, result){
+  ToDo.findOne({_id:id}, function(err, result){
     if(err) return next(err);
+    if(!result) return next({err: "couldnt find that specific todo"});
     req.todo = result;
     next();
   });
 });
 // GET /api/v1/todo
-router.get('/',function(req,res){
-//req.body is = newToDo (from controller and factory)
-res.send(ToDo.todos);
-
-});
-router.put('/:id', function(req,res){
-  req.todo.completed = new Date();
-  res.send();
-});
-
-router.post('/', function(req,res,next){
-  ToDo.create(req.body, function(err,result){
+router.get('/',function(req,res,next){
+  ToDo.find({}, function(err, result, next){
     if(err) return next(err);
     res.send(result);
   });
 });
 
+router.post('/', function(req,res,next){
+  //passes in entire object and mogoose checks which align to model and puts it in db and sets its new value
+  var todo = new ToDo(req.body);
+  todo.completed = null;
+  todo.created = new Date();
+  todo.save(function(err,result){
+    if(err) return next(err);
+    console.log(result);
+    res.send(result);
+  });
+});
+
+router.put('/:id', function(req,res,next){
+  ToDo.update({_id: req.todo._id},{ $set: {completed: new Date()}},
+  function(err,result){
+    if(err) return next(err);
+    res.send(result);
+  });
+});
+
+
 router.delete('/:id', function(req,res,next){
-  ToDo.remove(req.todo, function(err,result){
+  ToDo.remove({_id:req.todo.id}, function(err,result){
     if(err) return next(err);
     res.send();
   });
 });
 
-router.patch('/:id', function(req,res){
+router.patch('/:id', function(req,res,next){
   req.todo.completed = null;
-    res.send();
+  req.todo.save(function(err,result){
+    if(err) return next(err);
+    res.send(result);
+  });
+    // res.send();
 });
 
 
