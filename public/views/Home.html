@@ -1,0 +1,20 @@
+<div ng-controller="HomeController as vm">
+	<div class="well container form-inline" style="text-align:center;">
+		<input class="form-control" ng-model="vm.newToDo.title" placeholder="Title...">
+		<input class="form-control" ng-model="vm.newToDo.body" placeholder="Do what...">
+		<button type="button" class="btn btn-success" ng-click="vm.addToDo();">Submit</button>
+	</div>
+	<div layout="row" class="well container" layout-align="center center" ng-repeat ="t in vm.todos ">
+		<div flex="90">
+		<h3>{{t.title}}</h3>
+		<h4>{{t.body}}</h4>
+		<h4>Created on: <i>{{t.created | date:"medium"}}</i></h4>
+		<h4>Completed on: <i>{{t.completed | date:"medium"}}</i></h4>
+		</div>
+	    <div flex>
+				<button  type="button" class="btn btn-primary" ng-show="!t.completed" ng-click="vm.completeToDo(t)">Complete</button>
+				<button  type="button" class="btn btn-info" ng-show="t.completed" ng-click="vm.unCompleteToDo(t)">Redo</button>
+	    	<button type="button" class="btn btn-danger" ng-click="vm.deleteToDo(t);">Delete</button>
+	    </div>
+	</div>
+</div>
