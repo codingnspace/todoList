@@ -36,7 +36,6 @@ router.post('/', function(req,res,next){
   todo.created = new Date();
   todo.save(function(err,result){
     if(err) return next(err);
-    console.log(result);
     res.send(result);
   });
 });
